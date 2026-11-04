@@ -1,0 +1,17 @@
+name: agent-smoke
+on:
+  workflow_dispatch:
+permissions:
+  issues: write
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          REPO="${{ github.repository }}"
+          N=$(gh issue create --repo "$REPO" --title "Bot-originated request" --body "Opened by github-actions[bot] for ingestion testing." --json number --jq .number)
+          gh issue comment "$N" --repo "$REPO" --body "@zwanany add a README.md whose only line is: # wanan"
+          echo "created and commented on #$N"

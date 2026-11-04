@@ -12,6 +12,8 @@ jobs:
         run: |
           set -e
           REPO="${{ github.repository }}"
-          N=$(gh issue create --repo "$REPO" --title "Bot-originated request" --body "Opened by github-actions[bot] for ingestion testing." --json number --jq .number)
+          URL=$(gh issue create --repo "$REPO" --title "Bot-originated request" --body "Opened by github-actions[bot] for ingestion testing.")
+          N="${URL##*/}"
+          echo "created issue #$N"
           gh issue comment "$N" --repo "$REPO" --body "@zwanany add a README.md whose only line is: # wanan"
-          echo "created and commented on #$N"
+          echo "commented on #$N"
